@@ -10,6 +10,7 @@
     "npm:eslint@9": "9.16.0",
     "npm:next@15.1.0": "15.1.0_react@19.0.0_react-dom@19.0.0__react@19.0.0",
     "npm:postcss@8": "8.4.49",
+    "npm:prettier@^3.4.2": "3.4.2",
     "npm:react-dom@19": "19.0.0_react@19.0.0",
     "npm:react@19": "19.0.0",
     "npm:tailwindcss@^3.4.1": "3.4.16_postcss@8.4.49",
@@ -1803,6 +1804,9 @@
     "prelude-ls@1.2.1": {
       "integrity": "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="
     },
+    "prettier@3.4.2": {
+      "integrity": "sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ=="
+    },
     "prop-types@15.8.1": {
       "integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",
       "dependencies": [
@@ -2357,6 +2361,7 @@
         "npm:eslint@9",
         "npm:next@15.1.0",
         "npm:postcss@8",
+        "npm:prettier@^3.4.2",
         "npm:react-dom@19",
         "npm:react@19",
         "npm:tailwindcss@^3.4.1",

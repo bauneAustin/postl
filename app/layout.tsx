@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Roboto } from 'next/font/google'
+import { Roboto } from "next/font/google";
 
 import "./globals.css";
 
 const roboto = Roboto({
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -21,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html className="h-full w-full box-border" lang="en">
-      <body
-        className={`${roboto.className} antialiased h-full w-full`}
-      >
+      <body className={`${roboto.className} antialiased h-full w-full`}>
         {children}
       </body>
     </html>
