@@ -1,3 +1,3 @@
-export async function GET() {
-  return Response.json("welcome to Postl");
+export async function GET(request: Request) {
+  return Response.json({ message: `Welcome to Postl`, url: request.url });
 }

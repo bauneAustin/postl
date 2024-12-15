@@ -13,6 +13,27 @@ export default function RequestDialog(props: {
     // @ts-expect-error need to look into why ts unhappy here
     dispatch({ type: "update_url", payload: { url: evt?.target?.value } });
   };
+
+  const makeRequest = async () => {
+    const queryParams = new URLSearchParams();
+    if (requestState.detail === "params") {
+      requestState.queryTableRows.forEach((row) => {
+        queryParams.set(row.keyValue, row.value);
+      });
+    }
+
+    const response = await fetch(
+      requestState.url + "?" + queryParams.toString(),
+      {
+        method: requestState.method.toUpperCase(),
+      },
+    )
+      .then((res) => res.json())
+      .then((data) => data);
+
+    dispatch({ type: "update_response", payload: { response } });
+  };
+
   return (
     <div className="flex w-full h-18 p-1">
       <div className="flex w-full border rounded-lg mr-2">
@@ -29,7 +50,10 @@ export default function RequestDialog(props: {
           placeholder="Enter url"
         />
       </div>
-      <button className="p-2 rounded bg-blue-600 hover:bg-blue-500 text-silver-50 cursor-pointer">
+      <button
+        onClick={makeRequest}
+        className="p-2 rounded bg-blue-600 hover:bg-blue-500 text-silver-50 cursor-pointer"
+      >
         Send
       </button>
     </div>

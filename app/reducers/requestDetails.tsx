@@ -9,7 +9,7 @@ export type State = {
   detail: string;
   url: string;
   queryTableRows: TableRowDetail[];
-  response?: string;
+  response?: { data?: unknown; status: number };
 };
 
 export interface RequestAction {
@@ -19,13 +19,15 @@ export interface RequestAction {
     | "change_details"
     | "change_query_table"
     | "add_query_table_row"
-    | "remove_query_table_row";
+    | "remove_query_table_row"
+    | "update_response";
   payload: {
     method?: string;
     detail?: string;
     url?: string;
     queryRow?: TableRowDetail;
     id?: string;
+    response?: { data?: unknown; status: number };
   };
 }
 
@@ -36,25 +38,25 @@ export const initialState: State = {
   queryTableRows: [{ keyValue: "key", value: "value", id: "1" }],
 };
 
-export const requestReducer = (state: State, action: RequestAction) => {
+export const requestReducer = (prevState: State, action: RequestAction) => {
   switch (action.type) {
     case "update_url":
-      return { ...state, url: action.payload.url };
+      return { ...prevState, url: action.payload.url };
     case "change_method":
       return {
-        ...state,
+        ...prevState,
         method: action?.payload?.method || initialState.method,
       };
     case "change_details":
       return {
-        ...state,
+        ...prevState,
         detail: action?.payload?.detail || initialState.detail,
       };
     case "change_query_table":
       const { queryRow } = action?.payload;
       return {
-        ...state,
-        queryTableRows: state.queryTableRows?.map((row) => {
+        ...prevState,
+        queryTableRows: prevState.queryTableRows?.map((row) => {
           if (row.id === queryRow?.id) {
             return queryRow;
           }
@@ -62,17 +64,17 @@ export const requestReducer = (state: State, action: RequestAction) => {
         }),
       };
     case "add_query_table_row":
-      const updatedQueryTableRows = [...state.queryTableRows];
+      const updatedQueryTableRows = [...prevState.queryTableRows];
       if (action.payload.queryRow) {
         updatedQueryTableRows.push(action.payload.queryRow);
       }
-      return { ...state, queryTableRows: updatedQueryTableRows };
+      return { ...prevState, queryTableRows: updatedQueryTableRows };
     case "remove_query_table_row":
-      const filteredRows = state.queryTableRows.filter((row) => {
+      const filteredRows = prevState.queryTableRows.filter((row) => {
         return row.id !== action.payload.id;
       });
-      return { ...state, queryTableRows: filteredRows };
+      return { ...prevState, queryTableRows: filteredRows };
+    case "update_response":
+      return { ...prevState, response: action.payload.response };
   }
-
-  return { ...state };
 };

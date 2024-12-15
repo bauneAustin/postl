@@ -41,7 +41,7 @@ export default function Table(props: {
   };
 
   return (
-    <div className="h-full">
+    <div className="">
       <table className="table-fixed w-full mt-10 ml-2 mr-2">
         <thead>
           <tr>
@@ -69,11 +69,11 @@ export default function Table(props: {
           })}
         </tbody>
       </table>
-      <div
-        className="flex w-full justify-start mt-4 ml-4 mb-4"
-        onClick={addRow}
-      >
-        <button className="w-5 h-3 p-4 relative rounded bg-silver-900 text-silver-100 hover:bg-silver-800 cursor-pointer">
+      <div className="flex w-full justify-start mt-4 ml-4 mb-4">
+        <button
+          onClick={addRow}
+          className="w-5 h-3 p-4 relative rounded bg-silver-900 text-silver-100 hover:bg-silver-800 cursor-pointer"
+        >
           <PlusIcon className="relative h-10 w-10 text-silver-100 bottom-5 right-5" />
         </button>
       </div>
