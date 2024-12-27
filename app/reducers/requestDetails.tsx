@@ -26,8 +26,7 @@ export interface RequestAction {
     method?: string;
     detail?: string;
     url?: string;
-    queryRow?: TableRowDetail;
-    headerRow?: TableRowDetail;
+    row?: TableRowDetail;
     id?: string;
     response?: { data?: unknown; status: number };
   };
@@ -56,16 +55,30 @@ export const requestReducer = (prevState: State, action: RequestAction) => {
         detail: action?.payload?.detail || initialState.detail,
       };
     case "change_table":
-      const { queryRow } = action?.payload;
-      return {
-        ...prevState,
-        queryTableRows: prevState.queryTableRows?.map((row) => {
-          if (row.id === queryRow?.id) {
-            return queryRow;
-          }
-          return row;
-        }),
-      };
+      const { row, detail } = action?.payload;
+      if(detail === 'params') {
+        return {
+          ...prevState,
+          queryTableRows: prevState.queryTableRows?.map((tableRow) => {
+            if (tableRow.id === row?.id) {
+              return row;
+            }
+            return tableRow;
+          }),
+        };
+      }
+      if(detail === 'headers') {
+        return {
+          ...prevState,
+          headerTableRows: prevState.headerTableRows?.map((tableRow) => {
+            if (tableRow.id === row?.id) {
+              return row;
+            }
+            return tableRow;
+          }),
+        };
+      }
+      return prevState;
     case "add_table_row":
       const updatedQueryTableRows = [...prevState.queryTableRows];
       const updatedHeaderTableRows = [...prevState.headerTableRows];
@@ -77,10 +90,19 @@ export const requestReducer = (prevState: State, action: RequestAction) => {
       }
       return { ...prevState, queryTableRows: updatedQueryTableRows, headerTableRows: updatedHeaderTableRows };
     case "remove_table_row":
-      const filteredRows = prevState.queryTableRows.filter((row) => {
-        return row.id !== action.payload.id;
-      });
-      return { ...prevState, queryTableRows: filteredRows };
+      if(action.payload.detail === 'params'){
+        const filteredQueryRows = prevState.queryTableRows.filter((row) => {
+          return row.id !== action.payload.id;
+        });
+        return { ...prevState, queryTableRows: filteredQueryRows };
+      }
+      else if (action.payload.detail === 'headers') {
+        const filteredHeaderRows = prevState.headerTableRows.filter((row) => {
+          return row.id !== action.payload.id;
+        });
+        return { ...prevState, headerTableRows: filteredHeaderRows };
+      }
+      return prevState;
     case "update_response":
       return { ...prevState, response: action.payload.response };
   }

@@ -15,18 +15,18 @@ export default function Table(props: {
   const { requestState, dispatch } = props;
   const activeTable = requestState.detail === 'params' ? 
     requestState.queryTableRows : requestState.headerTableRows;
-  console.log()
+
   const onChange = (
     evt: ChangeEvent<HTMLElement>,
     type: string,
     id: string,
   ) => {
-    const queryRow: TableRowDetail = activeTable?.filter(
+    const row: TableRowDetail = activeTable?.filter(
       (row: TableRowDetail) => row.id === id,
     )[0];
     // @ts-expect-error need to look into why ts unhappy here
-    queryRow[type] = evt?.target?.value;
-    dispatch({ type: "change_query_table", payload: { queryRow } });
+    row[type] = evt?.target?.value;
+    dispatch({ type: "change_table", payload: { row, detail: requestState.detail } });
   };
 
   const addRow = () => {
@@ -39,7 +39,7 @@ export default function Table(props: {
   };
 
   const onRemove = (id: string) => {
-    dispatch({ type: "remove_query_table_row", payload: { id } });
+    dispatch({ type: "remove_table_row", payload: { id, detail: requestState.detail } });
   };
 
   return (
