@@ -7,7 +7,6 @@ export default function RequestDialog(props: {
   dispatch: ActionDispatch<[action: RequestAction]>;
 }) {
   const { requestState, dispatch } = props;
-  console.log("DIALOG: ", requestState);
 
   const onChange = (evt: ChangeEvent<HTMLElement>) => {
     // @ts-expect-error need to look into why ts unhappy here

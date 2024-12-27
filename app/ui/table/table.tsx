@@ -13,13 +13,15 @@ export default function Table(props: {
   dispatch: ActionDispatch<[action: RequestAction]>;
 }) {
   const { requestState, dispatch } = props;
-
+  const activeTable = requestState.detail === 'params' ? 
+    requestState.queryTableRows : requestState.headerTableRows;
+  console.log()
   const onChange = (
     evt: ChangeEvent<HTMLElement>,
     type: string,
     id: string,
   ) => {
-    const queryRow: TableRowDetail = requestState.queryTableRows?.filter(
+    const queryRow: TableRowDetail = activeTable?.filter(
       (row: TableRowDetail) => row.id === id,
     )[0];
     // @ts-expect-error need to look into why ts unhappy here
@@ -33,7 +35,7 @@ export default function Table(props: {
       value: "newVal",
       id: uuidv4(),
     };
-    dispatch({ type: "add_query_table_row", payload: { queryRow: newRow } });
+    dispatch({ type: "add_table_row", payload: { row: newRow, detail: requestState.detail } });
   };
 
   const onRemove = (id: string) => {
@@ -55,7 +57,7 @@ export default function Table(props: {
           </tr>
         </thead>
         <tbody>
-          {requestState?.queryTableRows?.map((row) => {
+          {activeTable?.map((row) => {
             return (
               <TableRow
                 onChange={onChange}
