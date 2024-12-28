@@ -4,7 +4,7 @@ export default function ResponseBody(props: { requestState: State }) {
   const { requestState } = props;
 
   return (
-    <div className="mt-auto min-h-72 w-full p-2 bg-silver-200 rounded mb-4">
+    <div className="mt-auto min-h-72 w-full p-2 bg-silver-100 rounded mb-4">
       <span className="block text-silver-950 h-8 w-full underline decoration-2 decoration-red-900 underline-offset-2">
         Response
       </span>

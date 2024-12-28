@@ -1,4 +1,4 @@
-import { RequestAction, State } from "@/app/reducers/requestDetails";
+import { RequestAction, State, TableRowDetail } from "@/app/reducers/requestDetails";
 import DropDown from "../dropdown/dropdown";
 import { ActionDispatch, ChangeEvent } from "react";
 
@@ -12,18 +12,41 @@ export default function RequestDialog(props: {
     dispatch({ type: "update_url", payload: { url: evt?.target?.value } });
   };
 
+const fixAndConvertToJson = () => {
+  try {
+    // Attempt to parse as JSON
+    return JSON.parse(requestState.body);
+  } catch {
+    // Try to auto-correct by adding quotes around keys
+    const fixedInput = requestState.body.replace(/(\w+):/g, '"$1":');
+    try {
+      const json = JSON.parse(fixedInput);
+      return json;
+    } catch (err) {
+      return err;
+    }
+  }
+}
+
   const makeRequest = async () => {
     const queryParams = new URLSearchParams();
-    if (requestState.detail === "params") {
+    if (requestState.detail !== "body") {
       requestState.queryTableRows.forEach((row) => {
         queryParams.set(row.keyValue, row.value);
       });
     }
 
+    const headers = requestState.headerTableRows.reduce((accum: Record<string, string>, row: TableRowDetail) => {
+      accum[row.keyValue] = row.value;
+      return accum
+    }, {});
+
     const response = await fetch(
-      requestState.url + "?" + queryParams.toString(),
+      `${requestState.url}${requestState.detail !== 'body' ? ("?" + queryParams.toString()) : ""}`,
       {
         method: requestState.method.toUpperCase(),
+        headers,
+        body: requestState.method !== 'get' ? JSON.stringify(fixAndConvertToJson()) : null
       },
     )
       .then((res) => res.json())

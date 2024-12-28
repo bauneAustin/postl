@@ -10,6 +10,7 @@ export type State = {
   url: string;
   queryTableRows: TableRowDetail[];
   headerTableRows: TableRowDetail[];
+  body: string;
   response?: { data?: unknown; status: number };
 };
 
@@ -21,13 +22,15 @@ export interface RequestAction {
     | "change_table"
     | "add_table_row"
     | "remove_table_row"
-    | "update_response";
+    | "update_response"
+    | "update_body";
   payload: {
     method?: string;
     detail?: string;
     url?: string;
     row?: TableRowDetail;
     id?: string;
+    body?: string;
     response?: { data?: unknown; status: number };
   };
 }
@@ -38,6 +41,7 @@ export const initialState: State = {
   url: "",
   queryTableRows: [{ keyValue: "key", value: "value", id: "1" }],
   headerTableRows: [{ keyValue: "key", value: "value", id: "1" }],
+  body: ""
 };
 
 export const requestReducer = (prevState: State, action: RequestAction) => {
@@ -105,5 +109,7 @@ export const requestReducer = (prevState: State, action: RequestAction) => {
       return prevState;
     case "update_response":
       return { ...prevState, response: action.payload.response };
+    case "update_body":
+      return { ...prevState, body: action.payload.body}
   }
 };
